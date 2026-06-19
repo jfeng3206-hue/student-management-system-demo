@@ -13,7 +13,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     //  Why @ResponseStatus alone didn't work:
-    //  Spring Boot's error handling pipeline processes unhandled exceptions through its own /error endpoint,
+    //  Spring Boot's error handling pipeline proce`sses unhandled exceptions through its own /error endpoint,
     //  which defaults to 500 for any RuntimeException subclass —even ones annotated with @ResponseStatus.
     //  The @ControllerAdvice intercepts the exception before it reaches that pipeline,
     //  so you get full control over the response.

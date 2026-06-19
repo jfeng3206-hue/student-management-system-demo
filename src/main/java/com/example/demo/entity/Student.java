@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +28,12 @@ public class Student {
 
     @Column(name="email_id",nullable=false, unique=true)
     private String email;
+
+    @ManyToMany
+    @JoinTable(
+        name = "student_departments",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    private List<Department> departments;
 }

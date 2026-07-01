@@ -7,10 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Build on dev') {
-            when {
-                branch 'dev'
-            }
+        stage('Build') {
             steps {
                 sh '''
                     export PATH=/opt/java/openjdk/bin:$PATH

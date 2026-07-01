@@ -18,7 +18,8 @@ public class StudentMapper {
                 studentDto.getId(),
                 studentDto.getFirstName(),
                 studentDto.getLastName(),
-                studentDto.getEmail()
+                studentDto.getEmail(),
+                null
         );
     }
 }

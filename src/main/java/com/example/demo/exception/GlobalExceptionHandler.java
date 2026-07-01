@@ -27,4 +27,28 @@ public class GlobalExceptionHandler {
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidNameAggregationRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidNameAggregationRequest(
+            InvalidNameAggregationRequestException ex
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NameAggregationForwardingException.class)
+    public ResponseEntity<Map<String, Object>> handleNameAggregationForwardingException(
+            NameAggregationForwardingException ex
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+        body.put("error", "Service Unavailable");
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

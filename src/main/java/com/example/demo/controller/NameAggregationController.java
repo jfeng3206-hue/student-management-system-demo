@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/name")
+@RequestMapping("/v1/name")
 public class NameAggregationController {
 
     private final NameAggregationService nameAggregationService;

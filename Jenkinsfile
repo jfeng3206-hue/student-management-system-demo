@@ -33,17 +33,19 @@ pipeline {
                         sudo docker stop sms || true
                         sudo docker rm sms || true
 
-                        APP_PID=$(pgrep -f "^java -jar app.jar$" || true)
-                        if [ -n "$APP_PID" ]; then
-                            sudo kill "$APP_PID"
-                            sleep 3
-                        fi
+                        sudo pkill -f "^java -jar app.jar$" || true
+                        sleep 3
 
                         mv /home/ubuntu/app.jar.tmp /home/ubuntu/app.jar
                         cd /home/ubuntu
+
+                        set -a
+                        . /home/ubuntu/sms.env
+                        set +a
+
                         nohup java -jar app.jar > app.log 2>&1 &
 
-                        sleep 10
+                        sleep 15
                         curl -f -X POST "http://localhost:8080/v1/name/aggregation?name=Jenkins"
                     '
                 '''

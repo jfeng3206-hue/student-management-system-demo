@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.NameAggregationRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class NameAggregationRecoveryService {
 
     private final Path recoveryFile;
 
+    @Autowired
     public NameAggregationRecoveryService(
             @Value("${name-aggregation.recovery-file:target/name-aggregation-recovery.log}") String recoveryFile
     ) {

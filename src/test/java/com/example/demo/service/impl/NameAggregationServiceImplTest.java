@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.NameAggregationRequest;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.junit.jupiter.api.Test;
@@ -41,10 +42,14 @@ class NameAggregationServiceImplTest {
                 new NameAggregationRecoveryService(recoveryFile)
         );
 
-        service.downgradeNameAggregation(List.of("Jessica"), new RuntimeException("service unavailable"));
+        NameAggregationRequest response = service.downgradeNameAggregation(
+                List.of("Jessica"),
+                new RuntimeException("service unavailable")
+        );
 
         assertThat(Files.readString(recoveryFile))
                 .contains("names=[Jessica]")
                 .contains("reason=service unavailable");
+        assertThat(response.name()).containsExactly("Jessica");
     }
 }

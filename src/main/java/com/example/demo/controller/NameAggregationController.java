@@ -31,8 +31,8 @@ public class NameAggregationController {
 
         List<String> names = List.of(name.trim());
 
-        nameAggregationService.forwardToNext(names);
+        NameAggregationRequest response = nameAggregationService.forwardToNext(names);
 
-        return ResponseEntity.ok(new NameAggregationRequest(names));
+        return ResponseEntity.ok(response);
     }
 }

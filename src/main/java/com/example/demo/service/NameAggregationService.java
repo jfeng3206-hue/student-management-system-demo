@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.NameAggregationRequest;
+
 import java.util.List;
 
 public interface NameAggregationService {
 
-    void forwardToNext(List<String> names);
+    NameAggregationRequest forwardToNext(List<String> names);
 }

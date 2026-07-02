@@ -40,17 +40,19 @@ public class NameAggregationServiceImpl implements NameAggregationService {
     @Override
     @Retry(name = "nameAggregation")
     @CircuitBreaker(name = "nameAggregation", fallbackMethod = "downgradeNameAggregation")
-    public void forwardToNext(List<String> names) {
+    public NameAggregationRequest forwardToNext(List<String> names) {
         NameAggregationRequest body = new NameAggregationRequest(names);
 
-        restClient.post()
+        return restClient.post()
                 .uri(nextServiceUrl)
                 .body(body)
                 .retrieve()
-                .toBodilessEntity();
+                .body(NameAggregationRequest.class);
     }
 
-    void downgradeNameAggregation(List<String> names, Throwable cause) throws IOException {
-        recoveryService.persist(new NameAggregationRequest(names), cause);
+    NameAggregationRequest downgradeNameAggregation(List<String> names, Throwable cause) throws IOException {
+        NameAggregationRequest body = new NameAggregationRequest(names);
+        recoveryService.persist(body, cause);
+        return body;
     }
 }

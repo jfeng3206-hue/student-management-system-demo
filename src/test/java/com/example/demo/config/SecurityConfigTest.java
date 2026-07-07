@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
@@ -46,6 +49,12 @@ class SecurityConfigTest {
 
     @Autowired
     private FakeNameAggregationService nameAggregationService;
+
+    @DynamicPropertySource
+    static void googleOAuthProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.security.oauth2.client.registration.google.client-id", SecurityConfigTest::randomGoogleClientId);
+        registry.add("spring.security.oauth2.client.registration.google.client-secret", () -> UUID.randomUUID().toString());
+    }
 
     @Test
     void healthEndpointIsPublic() throws Exception {
@@ -193,5 +202,9 @@ class SecurityConfigTest {
             forwardedNames.add(names);
             return new NameAggregationRequest(names);
         }
+    }
+
+    private static String randomGoogleClientId() {
+        return UUID.randomUUID() + ".apps.googleusercontent.com";
     }
 }

@@ -83,7 +83,7 @@ pipeline {
                         nohup java -jar app.jar > app.log 2>&1 &
 
                         sleep 15
-                        curl -fsS --max-time 10 "http://localhost:8080/api/students"
+                        curl -fsS --max-time 10 "http://localhost:8080/actuator/health"
                     '
                 '''
             }

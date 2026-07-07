@@ -11,6 +11,9 @@ pipeline {
             steps {
                 sh '''
                     export PATH=/opt/java/openjdk/bin:$PATH
+                    export SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL:-jdbc:postgresql://host.docker.internal:5432/sms}
+                    export SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME:-postgres}
+                    export SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD:-pass}
                     chmod +x ./mvnw
                     ./mvnw clean verify -B
                 '''

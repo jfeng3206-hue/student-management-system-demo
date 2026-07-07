@@ -83,7 +83,7 @@ pipeline {
                         nohup java -jar app.jar > app.log 2>&1 &
 
                         sleep 15
-                        curl -f -X POST "http://localhost:8080/v1/name/aggregation?name=Jenkins"
+                        curl -fsS --max-time 10 "http://localhost:8080/api/students"
                     '
                 '''
             }

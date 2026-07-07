@@ -7,12 +7,46 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Test & Coverage') {
             steps {
                 sh '''
                     export PATH=/opt/java/openjdk/bin:$PATH
                     chmod +x ./mvnw
-                    ./mvnw -DskipTests package
+                    ./mvnw clean verify -B
+                '''
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            when {
+                expression { return env.SONAR_ENABLED == 'true' }
+            }
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh '''
+                        export PATH=/opt/java/openjdk/bin:$PATH
+                        ./mvnw sonar:sonar -B
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            when {
+                expression { return env.SONAR_ENABLED == 'true' }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    export PATH=/opt/java/openjdk/bin:$PATH
+                    ./mvnw -DskipTests package -B
                 '''
             }
         }
